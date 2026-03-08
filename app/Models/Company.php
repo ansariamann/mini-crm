@@ -15,6 +15,7 @@ class Company extends Model
         'email',
         'logo',
         'website',
+        'company_id'
         
     ];
 

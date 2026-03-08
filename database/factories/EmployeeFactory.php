@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Company;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Employee>
@@ -19,8 +20,9 @@ class EmployeeFactory extends Factory
         return [
             'first_name'=>fake()->firstName(),
             'last_name'=>fake()->lastName(),
-            'email'=>fake()->unique()->safeEmail()
-            //
+            'email'=>fake()->unique()->safeEmail(),
+            'phone'=>fake()->numerify('## #######'),
+            'company_id' => Company::factory(),
         ];
     }
 }

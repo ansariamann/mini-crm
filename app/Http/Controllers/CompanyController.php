@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -12,8 +13,9 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::all();
-        return view('company.index', compact('companies'));
+        $employees = Employee::all();
+        $companies = Company::paginate(10);
+        return view('company.index', ['companies' => $companies  , 'employees' => $employees]);
     }
 
     /**
@@ -22,6 +24,8 @@ class CompanyController extends Controller
     public function create()
     {
         //
+        $companies = Company::all();
+        return view('company.create', ['companies' => $companies]);
     }
 
     /**
@@ -29,6 +33,17 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
+        $data = $request->validate([
+            'name' => 'required',
+            'email' => 'nullable|email',
+            'logo' => 'nullable|numeric',
+            'website' => 'nullable|url',
+            'company_id' => 'required|integer'
+            
+        ]);
+        Company::create($data);
+
+        return redirect()->route('company.index');
         //
     }
 
@@ -38,7 +53,8 @@ class CompanyController extends Controller
     public function show(Company $company)
     {
         return view('company.show', compact('company'));
-    }
+   }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -46,6 +62,7 @@ class CompanyController extends Controller
     public function edit(Company $company)
     {
         //
+        return view('company.edit',['company'=>$company]);
     }
 
     /**
@@ -53,7 +70,18 @@ class CompanyController extends Controller
      */
     public function update(Request $request, Company $company)
     {
+        $data = $request->validate([
+            'name' => 'required',
+            'email' => 'nullable|email',
+            'logo' => 'nullable|numeric',
+            'website' => 'nullable|url'
+            
+        ]);
+        $company->update($data);
+        return redirect()->route('company.index');
+
         //
+
     }
 
     /**
@@ -61,6 +89,13 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
+        $company->delete();
+        return redirect()->route('company.index');
         //
     }
+    public function showEmployees(Company $company)
+    {
+        $employees = $company->employees;
+        return view('employee.index', ['employees' => $employees]);
+}
 }

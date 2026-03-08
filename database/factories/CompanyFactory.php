@@ -20,7 +20,8 @@ class CompanyFactory extends Factory
             'name'=>fake()->company(),
             'email'=>fake()->unique()->safeEmail(),
             'logo'=>null
-            ,
+            ,'website'=>fake()->url(),
+            
             'company_id'=>fake()->unique()->numberBetween(1000, 9999)
             //
         ];
