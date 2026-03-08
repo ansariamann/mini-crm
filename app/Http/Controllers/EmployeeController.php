@@ -14,7 +14,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::all();
+        $employees = Employee::paginate(10);
         $companies = Company::all();
 
         return view('employee.index',['employees'=>$employees,'companies'=>$companies]);
@@ -41,11 +41,15 @@ class EmployeeController extends Controller
         $data = $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required|numeric',
+            'email' => 'nullable|email',
+            'phone' => 'nullable|numeric',
             'company_id' => 'required|integer|exists:companies,id',
-            
+            'profile_photo' => 'nullable|image|mimes:jpeg,png|max:10240'
         ]);
+        if ($request->hasFile('profile_photo')) {
+            $data['profile_photo'] = $request->file('profile_photo')->store('profile_pictures', 'public');
+        }
+        
 
         Employee::create($data);
 
@@ -57,7 +61,7 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        //
+        return view('employee.show', ['employee' => $employee]);
     }
 
     /**
@@ -81,10 +85,18 @@ class EmployeeController extends Controller
         $data = $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required|numeric',
+            'email' => 'nullable|email',
+            'phone' => 'nullable|numeric',
             'company_id' => 'required|integer|exists:companies,id',
+            'profile_photo' => 'nullable|image|mimes:jpeg,png|max:1024',
         ]);
+
+        if ($request->hasFile('profile_photo')) {
+            $data['profile_photo'] = $request->file('profile_photo')->store('profile_pictures', 'public');
+        } else {
+            unset($data['profile_photo']);
+        }
+
 
         $employee->update($data);
 

@@ -34,14 +34,18 @@
       <td>{{ ($companies->currentPage() - 1) * $companies->perPage() + $loop->iteration }}</td>
       <td>{{$company->name}}</td>
       <td>{{$company->email}}</td>
-      <td>{{$company->logo}}</td>
+      <td>
+        @if($company->logo)
+        <img src="{{asset('storage/' . $company->logo)}}" alt="Logo" width="100">
+        @endif
+      </td>
       <td>{{$company->website}}</td>
-      <td><a href ="{{route('company.showEmployees',['company'=>$company])}}">view</a></td>
+      <td><a href="{{route('company.showEmployees',['company'=>$company->id])}}">view</a></td>
 
 
       <td><a href="{{route('company.edit',['company'=>$company])}}">Edit</a></td>
       <td>
-        <form action="{{route('company.destroy',['company'=>$company])}}" method='post'>
+        <form action="{{route('company.destroy',['company'=>$company])}}" method="POST">
           @csrf
           @method("DELETE")
           <input type="submit" value="Delete">
@@ -50,7 +54,7 @@
     </tr>
     @endforeach
   </table>
-     <div width="100%">
+     <div style="width: 100%;">
        {{ $companies->links()}}
       </div>
 

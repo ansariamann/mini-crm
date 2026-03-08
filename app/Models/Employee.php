@@ -13,7 +13,8 @@ protected $fillable = [
             'last_name',
             'email',
             'phone',
-            'company_id'
+            'company_id',
+            'profile_photo'
 
         ];
     //

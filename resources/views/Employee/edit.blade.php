@@ -16,7 +16,7 @@
         </ul>
     </div>
   @endif
-  <form action="{{route('employee.update', $employee->id)}}" method="POST">
+  <form action="{{route('employee.update', $employee->id)}}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     <label >First Name:</label>
@@ -35,9 +35,13 @@
     <select name="company_id" id="company_id" required>
         <option value="">select</option>
         @foreach($companies as $company)
-            <option value="{{ $company->id }}">{{ $company->name }}</option>
+                    <option value="{{ $company->id }}">{{ $company->name }}</option>
+
         @endforeach
     </select><br><br>
+    <label for="profile_photo">Profile Picture:</label>
+    
+    <input type="file" id="profile_photo" name="profile_photo" accept="image/*"><br><br>
         
 
     

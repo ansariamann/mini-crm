@@ -16,7 +16,7 @@
         </ul>
     </div>
   @endif
-  <form action="{{route('company.update', ['company' => $company->id])}}" method="POST">
+  <form action="{{route('company.update', ['company' => $company->id])}}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     <label >Name:</label>
@@ -26,7 +26,7 @@
     <input type="text" id="email" name="email" placeholder="email" value="{{ $company->email }}" required><br><br>
 
     <label >logo:</label>
-    <input type="text" id="logo" name="logo" placeholder="logo" value="{{ $company->logo }}" required><br><br>
+    <input type="file" id="logo" name="logo" placeholder="logo" accept="image/*" required><br><br>
 
     <label >Website:</label>
     <input type="text" id="website" name="website" placeholder="website" value="{{ $company->website }}" required><br><br>

@@ -16,7 +16,7 @@
         </ul>
     </div>
   @endif
-  <form action="{{ route('employee.store') }}" method="POST">
+  <form action="{{ route('employee.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('POST')
     <label >First Name:</label>
@@ -38,6 +38,9 @@
             <option value="{{ $company->id }}">{{ $company->name }}</option>
         @endforeach
     </select><br><br>
+    <label for="profile_photo">Profile Picture:</label>
+    <input type="file" id="profile_photo" name="profile_photo" accept="image/*" required><br><br>
+
         
 
     

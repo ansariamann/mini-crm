@@ -21,9 +21,10 @@ class CompanyController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+       
+
         $companies = Company::all();
         return view('company.create', ['companies' => $companies]);
     }
@@ -33,14 +34,22 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
+        
         $data = $request->validate([
             'name' => 'required',
             'email' => 'nullable|email',
-            'logo' => 'nullable|numeric',
+            'logo' => 'nullable|image|mimes:jpeg,png|min:100,100',
             'website' => 'nullable|url',
-            'company_id' => 'required|integer'
             
         ]);
+        $data['company_id'] = random_int(1000, 9999);
+        
+        \Illuminate\Support\Facades\Validator::make($data, ['company_id' => 'unique:companies,company_id'])->validate();
+
+        if ($request->hasFile('logo')) {
+            $data['logo'] = $request->file('logo')->store('logos', 'public');
+        }
+        
         Company::create($data);
 
         return redirect()->route('company.index');
@@ -52,7 +61,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        return view('company.show', compact('company'));
+        return view('company.show', ['company' => $company]);
    }
 
 
@@ -73,10 +82,14 @@ class CompanyController extends Controller
         $data = $request->validate([
             'name' => 'required',
             'email' => 'nullable|email',
-            'logo' => 'nullable|numeric',
+            'logo' => 'nullable|image|mimes:jpg,png,gif|max:10240',
             'website' => 'nullable|url'
             
         ]);
+
+        if ($request->hasFile('logo')) {
+            $data['logo'] = $request->file('logo')->store('logos', 'public');
+        }
         $company->update($data);
         return redirect()->route('company.index');
 
@@ -95,7 +108,7 @@ class CompanyController extends Controller
     }
     public function showEmployees(Company $company)
     {
-        $employees = $company->employees;
+        $employees = $company->employees()->paginate(10);
         return view('employee.index', ['employees' => $employees]);
 }
 }

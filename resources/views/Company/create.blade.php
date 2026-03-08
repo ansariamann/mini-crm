@@ -16,7 +16,7 @@
         </ul>
     </div>
   @endif
-  <form action="{{ route('company.store') }}" method="POST">
+  <form action="{{ route('company.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('POST')
     <label >Name:</label>
@@ -25,16 +25,18 @@
     <label >Email</label>
     <input type="text" id="last_name" name="last_name" required><br><br>
 
+
     <label >logo</label>
-    <input type="text" id="logo" name="logo" required><br><br>
+    
+    <input type="file" id="logo" name="logo" accept="image/*" required><br><br>
 
     <label >Website:</label>
     <input type="text" id="website" name="website" required><br><br>
-@php
+<!-- @php
 
     $company_id= random_int(1000,9999);
 @endphp
-    <input type="hidden" name="company_id" value="{{$company_id}}"><br><br>
+    <input type="hidden" name="company_id" value="{{$company_id}}"><br><br> -->
 
     
         
