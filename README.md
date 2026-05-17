@@ -1,6 +1,5 @@
-﻿# Mini CRM (Laravel Practical Assignment)
-
-Very small Laravel app for the practical assignment: manage **Employees** linked to **Companies**.
+﻿# Mini CRM 
+A Laravel app for the practical assignment: manage **Employees** linked to **Companies**.
 
 ## Features
 
